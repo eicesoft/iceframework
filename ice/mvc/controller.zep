@@ -1,6 +1,7 @@
 namespace Ice\Mvc;
 
 use Ice\Mvc\Proxy\ComponentProxy;
+use Ice\Event\EventManager;
 
 //控制器类
 class Controller

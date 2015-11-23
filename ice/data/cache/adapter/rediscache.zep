@@ -25,6 +25,11 @@ class RedisCache extends ICache
 
 	public function delete(string key)
 	{
-		return this->_handler->delete(key);
+		return this->_handler->del(key);
 	}
+
+    public function __call(string name, array arguments)
+    {
+        return call_user_func_array([this->_handler, name], arguments);
+    }
 }

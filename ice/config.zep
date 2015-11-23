@@ -45,7 +45,6 @@ final class Config
 				return this->modules[module][key];
 			}
 		}
-
 	}
 
 	//获得配置实例

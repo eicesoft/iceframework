@@ -6,25 +6,29 @@ use Ice\Error;
 //模型代理类
 class ModelProxy
 {
-	private modelName;
+	private _modelName;
+
+	private _instance;
 
 	public function __construct(string name)
 	{
-		let this->modelName = name;
+		let this->_modelName = name;
 	}
 
 	public function __call(string name, array arguments)
 	{
-		var namespaces = Core::Instance()->get("namespaces");
-		var className = "%s\%s"->format(namespaces["models"], this->modelName);
+	    if !this->_instance {
+            var namespaces = Core::Instance()->get("namespaces");
+            var className = "%s\%s"->format(namespaces["models"], this->_modelName);
 
-		var instance;
-		let instance = new {className};
-
-		if method_exists(instance, name) {
-			return call_user_func_array([instance, name], arguments);
-		} else {
-			throw new Error("No found modelName [" . this->modelName . "] is method " . name . ".", Error::ERROR_NO_MODEL_METHOD);
+            let this->_instance = new {className};
 		}
+
+		if method_exists(this->_instance, name) {
+            return call_user_func_array([this->_instance, name], arguments);
+        } else {
+            throw new Error("No found modelName [" . this->_modelName . "] is method " . name . ".",
+                Error::ERROR_NO_MODEL_METHOD);
+        }
 	}
 }

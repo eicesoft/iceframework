@@ -30,13 +30,14 @@ class Logger
 		let this->_channels = [];
 
 		var config = Config::Instance()->get(null, "log");
-		this->setLevelType(config["level"]);
 		var handler;
 		var className;
 		for handler in config["handlers"] {
 			let className = "\Ice\Log\Channel\%s"->format(handler["type"]);
 			this->addChannel(new {className});
 		}
+
+		this->setLevelType(config["level"]);
 	}
 
 	public function addChannel(channel)
@@ -54,7 +55,9 @@ class Logger
 		if type >= this->_level {
 			var channel;
 			for channel in this->_channels {
-				channel->log(type, message, context);
+			    if channel instanceof Channel {
+				    channel->log(type, message, context);
+				}
 			}
 		}
 	}

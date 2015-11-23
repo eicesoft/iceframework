@@ -132,6 +132,12 @@ class Cache
 		return data;
 	}
 
+    public function __call(string name, array arguments)
+    {
+        let arguments[0] = this->getPrefixKey(arguments[0]);
+        return call_user_func_array([this->_handlers[this->_connect], name], arguments);
+    }
+
 	/**
 	 * 获得Cache实例
 	 * @return <Cache>

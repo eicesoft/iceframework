@@ -44,7 +44,7 @@ class Http
 		return output;
 	}
 
-	public function sort(array value) -> array
+	protected function sort(array value) -> array
 	{
 		ksort(value);
 		return value;

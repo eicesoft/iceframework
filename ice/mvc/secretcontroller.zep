@@ -12,7 +12,7 @@ class SecretController extends Controller
 		this->vaild();
 	}
 
-	public function sort(array value) -> array
+	protected function sort(array value) -> array
 	{
 		ksort(value);
 		return value;
