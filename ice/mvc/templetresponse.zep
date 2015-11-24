@@ -44,7 +44,6 @@ class TempletResponse extends Response
 		];
 		let this->twig = new \Twig_Environment(loader, config);
 
-        this->twig->addExtension(new \Twig_Extension_Optimizer());
 		this->twig->addExtension(new \Twig_Extension_Debug());
 
 		this->twig->addGlobal("session", _SESSION);

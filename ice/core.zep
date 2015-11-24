@@ -99,9 +99,9 @@ final class Core
      * @param int errno
      * @param string errorstr
      * @param string errfile
-     * @param int errline
+     * @param string errline
      */
-	public function error_handler(int errno, string errstr, string errfile, int errline)
+	public function error_handler(int errno, string errstr, string errfile, string errline, array! errcontext)
 	{
         Logger::Instance()->error(sprintf("{ERR}%s(%d)-[%s:%d]", errstr, errno, errfile, errline));
     }
