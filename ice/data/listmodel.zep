@@ -16,23 +16,34 @@ class ListModel
      */
     protected _main_id;
 
+    /**
+     * cache组件
+     * @var Cache
+     */
     protected _cache;
 
     /**
      * 构造函数
-     * @param string $main_id
      */
     public function __construct()
     {
         let this->_cache = Cache::Instance();
     }
 
+    /**
+     * 获得主键ID
+     * @param string id
+     */
     public function setId(id)
     {
         let this->_main_id = id;
     }
 
-    public function getId()
+    /**
+     * 获得主键ID
+     * @return string
+     */
+    public function getId() -> string
     {
         return this->_main_id;
     }
@@ -48,7 +59,7 @@ class ListModel
 
     /**
      * 设置数据项
-     * @param var id
+     * @param mixed id
      * @param bar data
      */
     public function set(var id, var data)
@@ -60,7 +71,7 @@ class ListModel
 
     /**
      * 批量设置数据
-     * @param var datas
+     * @param mixed datas
      */
     public function sets(var datas)
     {
@@ -71,43 +82,67 @@ class ListModel
 
     /**
      * 删除数据项
-     * @param var id
+     * @param mixed id
+     * @return int
      */
-    public function delete(var id)
+    public function delete(var id) -> int
     {
         var key = this->getKey();
 
-        this->_cache->hDel(key, id);
+        return this->_cache->hDel(key, id);
     }
 
-    public function get(id)
+    /**
+     * 获得数据项
+     * @param mixed id
+     * @return array
+     */
+    public function get(var id) -> array
     {
         var key = this->getKey();
 
         return this->_cache->hGet(key, id);
     }
 
-    public function gets(array ids)
+    /**
+     * 获得数据项列表
+     * @param array ids
+     * @return array
+     */
+    public function gets(array ids) -> array
     {
         var key = this->getKey();
 
         return this->_cache->hmGet(key, ids);
     }
 
-    public function all()
+    /**
+     * 获得数据项列表
+     * @return array
+     */
+    public function all() -> array
     {
         var key = this->getKey();
 
         return this->_cache->hGetAll(key);
     }
 
-    public function remove()
+    /**
+     * 删除数据
+     * @return int
+     */
+    public function remove() -> int
     {
         var key = this->getKey();
 
         return this->_cache->delete(key);
     }
 
+    /**
+     * 判断数据项是否存在
+     * @param mixed id
+     * @return bool
+     */
     public function exist(var id) -> bool
     {
         var key = this->getKey();
@@ -115,6 +150,10 @@ class ListModel
         return this->_cache->hExists(key, id);
     }
 
+    /**
+     * 获得数据列表长度
+     * @return int
+     */
     public function count() -> int
     {
         var key = this->getKey();
@@ -122,6 +161,10 @@ class ListModel
         return this->_cache->hLen(key);
     }
 
+    /**
+     * 获得数据项键名列表
+     * @return array
+     */
     public function ids() -> array
     {
         var key = this->getKey();

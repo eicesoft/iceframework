@@ -1,7 +1,16 @@
 namespace Ice\Log;
 
+/**
+ * 格式化类
+ * @author kelezyb
+ */
 abstract class Formatter
 {
+    /**
+     * 获得日志类型字符串
+     * @param int type
+     * @return string
+     */
 	protected function getTypeString(int type) -> string
 	{
 		switch type {
@@ -20,5 +29,11 @@ abstract class Formatter
 		return "CUSTOM";
 	}
 
+    /**
+     * 格式化数据
+     * @param int type
+     * @param mixed message
+     * @param array context
+     */
 	abstract public function format(int type, var message = null, array! context = null) -> string;
 }

@@ -2,7 +2,10 @@ namespace Ice\Mvc;
 
 use Ice\Core;
 
-//JSON输出
+/**
+ * 错误码输出
+ * @author kelezyb
+ */
 class ErrorResponse extends Response
 {
 	public function getContent() -> string

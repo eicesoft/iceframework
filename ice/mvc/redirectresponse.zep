@@ -2,7 +2,10 @@ namespace Ice\Mvc;
 
 use Ice\Core;
 
-//JSON输出
+/**
+ * 页面跳转输出
+ * @author kelezyb
+ */
 class RedirectResponse extends Response
 {
 	public function getContent() -> string

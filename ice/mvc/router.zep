@@ -3,6 +3,10 @@ namespace Ice\Mvc;
 use Ice\Config;
 use Ice\Error;
 
+/**
+ * 路由处理类
+ * @author kelezyb
+ */
 class Router
 {
 	private static instance = null;

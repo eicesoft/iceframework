@@ -2,7 +2,10 @@ namespace Ice\Mvc;
 
 use Ice\Core;
 
-//JSON输出
+/**
+ * JSON输出
+ * @author kelezyb
+ */
 class JsonResponse extends Response
 {
 	public function getContent() -> string

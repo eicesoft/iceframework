@@ -2,7 +2,9 @@ namespace Ice\Data;
 
 use Ice\Config;
 
-//DB配置
+/**
+ * DB配置
+ */
 class Db
 {
 	const FETCH_TYPE_ALL = 0;
@@ -17,7 +19,7 @@ class Db
 	private readerhandler;
 
 	/**
-	 *
+	 * @var \PDO
 	 */
 	private writerhandler;
 
@@ -29,7 +31,6 @@ class Db
 
 	/**
 	 * @param array $config
-	 * @return mixed
 	 */
 	protected function _init(array configs)
 	{
@@ -48,6 +49,10 @@ class Db
 		}
 	}
 
+    /**
+     * 初始化Handler
+     * @param array config
+     */
 	private function _initHandler(config)
 	{
 		var dns = "%s:host=%s;dbname=%s"->format(config["type"], config["host"], config["database"]);
@@ -61,9 +66,10 @@ class Db
 	}
 
 	/**
-	 * @param string $sql
-	 * @param int $mode
-	 * @return mixed
+	 * 执行数据查询
+	 * @param string sql
+	 * @param int mode
+	 * @return array
 	 */
 	public function query(string sql, int mode = Db::FETCH_TYPE_ALL)
 	{
@@ -84,6 +90,9 @@ class Db
 		}
 	}
 
+    /**
+     *
+     */
 	public function $fetch(string sql)
 	{
 		var stmt;
@@ -94,6 +103,7 @@ class Db
 	}
 
 	/**
+	 * 执行SQL语句
 	 * @param string sql
 	 * @param bool id
 	 * @return mixed
@@ -108,7 +118,11 @@ class Db
 		}
 	}
 
-	//获得配置实例
+	//
+	/**
+     * 获得配置实例
+     * @return Db
+     */
 	public static function Instance() -> <Db>
 	{
 		if null == self::instance {
@@ -122,7 +136,7 @@ class Db
 	 * @param string str
 	 * @return string
 	 */
-	public function real_escape_string(str)
+	public function real_escape_string(str) -> string
 	{
 		return addslashes(str);
 	}

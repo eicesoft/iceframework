@@ -1,8 +1,8 @@
 namespace Ice\Data\Cache\Adapter;
 
-use Ice\Data\Cache\ICache;
+use Ice\Data\ICache;
 
-class RedisCache extends ICache
+class RedisCache implements ICache
 {
 	private _handler;
 
@@ -18,12 +18,12 @@ class RedisCache extends ICache
 		return this->_handler->get(key);
 	}
 
-	public function set(string key, data, int expire)
+	public function set(string key, var data, int expire)
 	{
 		return this->_handler->set(key, data, expire);
 	}
 
-	public function delete(string key)
+	public function delete(string key) -> int
 	{
 		return this->_handler->del(key);
 	}

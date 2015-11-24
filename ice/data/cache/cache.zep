@@ -140,7 +140,7 @@ class Cache
 
 	/**
 	 * 获得Cache实例
-	 * @return <Cache>
+	 * @return Cache
 	 */
 	public static function Instance() -> <Cache>
 	{

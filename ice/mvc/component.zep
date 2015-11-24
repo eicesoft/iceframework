@@ -3,11 +3,21 @@ namespace Ice\Mvc;
 use Ice\Log\Logger;
 use Ice\Mvc\Proxy\ModelProxy;
 
-//控制器类
+/**
+ * 业务组件类
+ * @author kelezyb
+ */
 class Component
 {
+    /**
+     * 日志扩展
+     * @var Logger
+     */
 	protected log;
 
+    /**
+     * 构造函数
+     */
 	public function __construct()
 	{
 		var refobj;
