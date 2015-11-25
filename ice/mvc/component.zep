@@ -1,6 +1,7 @@
 namespace Ice\Mvc;
 
 use Ice\Log\Logger;
+use Ice\Config;
 use Ice\Mvc\Proxy\ModelProxy;
 
 /**
@@ -14,6 +15,12 @@ class Component
      * @var Logger
      */
 	protected log;
+
+	/**
+	 * 配置读取
+	 * @var Config
+	 */
+	protected config;
 
     /**
      * 构造函数
@@ -32,5 +39,6 @@ class Component
 		}
 
 		let this->log = Logger::Instance();
+		let this->config = Config::Instance();
 	}
 }
