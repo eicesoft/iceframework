@@ -1,6 +1,7 @@
 namespace Ice;
 
 use Ice\Log\Logger;
+use Ice\Util\Profile;
 
 /**
  * 框架核心类
@@ -112,6 +113,8 @@ final class Core
      */
 	public function run(int mode = Core::WEB_MODE)
 	{
+        Profile::Instance()->start("page");
+
 	    let this->dispatcher = Mvc\Dispatcher::Instance();
 	    switch mode {
 	        case Core::WEB_MODE:
@@ -125,7 +128,6 @@ final class Core
 	            this->dispatcher->shell();
 	            break;
 	    }
-
 	}
 
     /**
@@ -135,6 +137,15 @@ final class Core
 	{
         set_error_handler([this, "error_handler"],  E_ALL);
         set_exception_handler([this, "exception_handler"]);
+        register_shutdown_function([this, "shutdown_handler"]);
+	}
+
+    /**
+     * 页面卸载回调
+     */
+	public function shutdown_handler()
+	{
+	    Profile::Instance()->end("page");
 	}
 
     /**

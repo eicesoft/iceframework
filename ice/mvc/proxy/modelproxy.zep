@@ -52,4 +52,27 @@ class ModelProxy
                 Error::ERROR_NO_MODEL_METHOD);
         }
 	}
+
+	public function __set(name, value)
+    {
+        if !this->_instance {
+            var namespaces = Core::Instance()->get("namespaces");
+            var className = "%s\%s"->format(namespaces["models"], this->_modelName);
+
+            let this->_instance = new {className};
+        }
+        this->_instance->set(name, value);
+    }
+
+    public function __get(name)
+    {
+        if !this->_instance {
+            var namespaces = Core::Instance()->get("namespaces");
+            var className = "%s\%s"->format(namespaces["models"], this->_modelName);
+
+            let this->_instance = new {className};
+        }
+
+        return this->_instance->__get(name);
+    }
 }

@@ -1,6 +1,7 @@
 namespace Ice\Data;
 
 use Ice\Config;
+use Ice\Util\Profile;
 
 /**
  * DB配置
@@ -73,6 +74,8 @@ class Db
 	 */
 	public function query(string sql, int mode = Db::FETCH_TYPE_ALL)
 	{
+	    string key = "sql_%s"->format(microtime(true));
+	    Profile::Instance()->start(key);
  		var stmt;
 		var result;
 
@@ -84,6 +87,10 @@ class Db
 			} else {
 				let result = stmt->$fetch(\PDO::FETCH_ASSOC);
 			}
+			Profile::Instance()->end(key);
+			var time = Profile::Instance()->get(key, Profile::TIME_FIELD);
+			var memory = Profile::Instance()->get(key, Profile::MEMORY_FIELD);
+			Profile::Instance()->record("sql", sql, time, memory);
 			return result;
 		} else {
 			return [];
@@ -95,9 +102,16 @@ class Db
      */
 	public function $fetch(string sql)
 	{
+	    string key = "sql_%s"->format(microtime(true));
+        Profile::Instance()->start(key);
+
 		var stmt;
 		let stmt = this->readerhandler->prepare(sql, [\PDO::ATTR_CURSOR: \PDO::CURSOR_SCROLL]);
 		stmt->execute();
+        Profile::Instance()->end(key);
+        var time = Profile::Instance()->get(key, Profile::TIME_FIELD);
+        var memory = Profile::Instance()->get(key, Profile::MEMORY_FIELD);
+        Profile::Instance()->record("sql", sql, time, memory);
 
 		return stmt;
 	}
@@ -112,10 +126,10 @@ class Db
 	{
 		var ret = this->writerhandler->exec(sql);
 		if id {
-			return this->writerhandler->lastInsertId();
-		} else {
-			return ret;
+			let ret = this->writerhandler->lastInsertId();
 		}
+
+		return ret;
 	}
 
 	//
