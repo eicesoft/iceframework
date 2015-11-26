@@ -14,6 +14,16 @@ final class Core
 	const VERSION = "0.9.0.1";
 
     /**
+     * web运行模式
+     */
+    const WEB_MODE = 0;
+
+    /**
+     * shell运行模式
+     */
+    const SHELL_MODE = 1;
+
+    /**
      * @var Core
      */
 	private static instance = null;
@@ -69,20 +79,53 @@ final class Core
 	{
 		let this->app_config = config;
 		this->error_register();
+		this->init();
+	}
+
+	private function init()
+	{
+	    var debug, timezone;
+	    if fetch debug, this->app_config["debug"] {
+	        if debug {
+	            ini_set("display_errors", 1);
+	            error_reporting(E_ALL);
+	        } else {
+	            ini_set("display_errors", 0);
+	            error_reporting(0);
+	        }
+	    } else {
+	        ini_set("display_errors", 0);
+            error_reporting(0);
+	    }
+
+        if fetch timezone, this->app_config["timezone"] {
+            date_default_timezone_set(timezone);
+        } else {
+            date_default_timezone_set("UTC");
+        }
+
+        Loader::Instance()->register();
 	}
 
     /**
      * App运行
      */
-	public function run()
+	public function run(int mode = Core::WEB_MODE)
 	{
-		Loader::Instance()->register();
-		let this->dispatcher = Mvc\Dispatcher::Instance();
-		var response = this->dispatcher->execute();
+	    let this->dispatcher = Mvc\Dispatcher::Instance();
+	    switch mode {
+	        case Core::WEB_MODE:
+                var response = this->dispatcher->execute();
 
-		if response {
-			echo response->getContent();
-		}
+                if response {
+                    echo response->getContent();
+                }
+	            break;
+	        case Core::SHELL_MODE:
+	            this->dispatcher->shell();
+	            break;
+	    }
+
 	}
 
     /**

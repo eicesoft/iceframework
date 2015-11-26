@@ -1,7 +1,6 @@
 namespace Ice\Mvc;
 
 use Ice\Mvc\Proxy\ComponentProxy;
-use Ice\Event\EventManager;
 
 /**
  * 控制器类
@@ -89,4 +88,14 @@ class Controller
 	{
 		return new RedirectResponse(url);
 	}
+
+	/**
+     * 构造安全数据响应
+     * @param string url
+     * @return Response
+     */
+    public function buildSecretData(array data)
+    {
+        return new SecretResponse(data);
+    }
 }

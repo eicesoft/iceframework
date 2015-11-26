@@ -48,8 +48,7 @@ final class Loader
 		let className = str_replace("\\", "/", className->lowerfirst());
 
 		if !isset this->_classses[className] {
-			var app_config = Core::Instance()->getAppConfig();
-			var appPath = "%s/%s"->format(app_config["base"], app_config["app"]);
+			var appPath = Core::Instance()->getAppPath();
 			var classFile = "%s/%s.php"->format(appPath, className);
 
 			if file_exists(classFile) {

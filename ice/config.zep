@@ -26,8 +26,7 @@ final class Config
      */
 	private function __construct()
 	{
-		var app_config = Core::Instance()->getAppConfig();
-		let this->appConfigPath = "%s%s"->format(app_config["base"], "/app/configs");
+		let this->appConfigPath = "%s/configs"->format(Core::Instance()->getAppPath());
 		let this->modules = [];
 	}
 

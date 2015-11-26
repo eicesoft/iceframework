@@ -27,8 +27,7 @@ class FileChannel extends Channel
      */
 	public function __construct()
 	{
-		var app_config = Core::Instance()->getAppConfig();
-		var appLogPath = "%s%s/%s.log"->format(app_config["base"], "/app/logs", date("Y-m-d"));
+		var appLogPath = "%s/logs/%s.log"->format(Core::Instance()->getAppPath(), date("Y-m-d"));
 		let this->_handler = fopen(appLogPath, "a+");
 		let this->_formatter = new LineFormatter();
 	}

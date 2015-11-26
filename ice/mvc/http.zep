@@ -95,6 +95,12 @@ class Http
 		return this->post(url, params);
 	}
 
+	public function decode_post(string url, array params) -> string
+	{
+	    var dedata = this->post(url, params);
+        return json_decode(gzuncompress(dedata), true);
+	}
+
     /**
      * 检查错误
      */

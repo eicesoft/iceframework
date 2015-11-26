@@ -25,7 +25,7 @@ class Dispatcher
      */
 	public function __construct()
 	{
-		let this->router = Router::Instance();
+
 	}
 
     /**
@@ -34,8 +34,25 @@ class Dispatcher
      */
 	public function execute()
 	{
+	    let this->router = Router::Instance();
 		var route = this->router->match();
 		return this->_call(route);
+	}
+
+	public function shell()
+	{
+	    var argv;
+	    var param;
+	    if fetch argv, _SERVER["argv"] {
+	        if count(argv) > 1 {
+	            var namespaces = Core::Instance()->get("namespaces");
+	            var instance;
+                let param = array_slice(argv, 2);
+                var className = "%s\%s"->format(namespaces["shells"], argv[1]);
+                let instance = this->newInstance(className);
+                call_user_func_array([instance, "execute"], param);
+            }
+	    }
 	}
 
     /**

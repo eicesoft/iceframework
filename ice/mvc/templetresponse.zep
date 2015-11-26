@@ -33,8 +33,8 @@ class TempletResponse extends Response
 	{
 		let this->view = view;
 		var app_config = Core::Instance()->getAppConfig();
-		var viewPath = "%s/%s/%s"->format(app_config["base"],  app_config["app"],  app_config["paths"]["view"]);
-		var viewCachePath = "%s/%s/%s/views"->format(app_config["base"],  app_config["app"],  app_config["paths"]["cache"]);
+		var viewPath = "%s/%s"->format(Core::Instance()->getAppPath(),  app_config["paths"]["view"]);
+		var viewCachePath = "%s/%s/views"->format(Core::Instance()->getAppPath(),  app_config["paths"]["cache"]);
 		var loader;
 		let loader = new \Twig_Loader_Filesystem(viewPath);
 		var config = [

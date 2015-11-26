@@ -52,11 +52,12 @@
         "check-invalid-reads": false,
         "internal-call-transformation": false
     },
+
     "namespace": "ice",
     "name": "ice",
-    "description": "Ice framework",
+    "description": "Ice framework(Kill Ouyang 100 counts.)",
     "author": "kelezyb",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "verbose": false,
     "requires": {
         "extensions": [
