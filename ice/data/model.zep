@@ -140,11 +140,13 @@ class Model
 		var k,v;
 
 		for k, v in data {
-			if is_string(v) {
-				let v =  Db::Instance()->real_escape_string($v);
-				let sets[] = "`%s`='%s'"->format(k, v);
-			} else {
-				let sets[] = "`%s`=%s"->format(k, v);
+		    if v != null {
+                if is_string(v) {
+                    let v =  Db::Instance()->real_escape_string($v);
+                    let sets[] = "`%s`='%s'"->format(k, v);
+                } else {
+                    let sets[] = "`%s`=%s"->format(k, v);
+                }
 			}
 		}
 
@@ -168,13 +170,15 @@ class Model
 		array fields = [];
 		array values = [];
 		for k,v in data {
-			let fields[] = "`" . k . "`";
+            if v != null {
+                let fields[] = "`" . k . "`";
 
-			if is_string(v) {
-				let v =  Db::Instance()->real_escape_string($v);
-				let values[] = "'" . v . "'";
-			} else {
-				let values[] = v;
+                if is_string(v) {
+                    let v =  Db::Instance()->real_escape_string($v);
+                    let values[] = "'" . v . "'";
+                } else {
+                    let values[] = v;
+                }
 			}
 		}
 

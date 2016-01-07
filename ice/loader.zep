@@ -51,11 +51,11 @@ final class Loader
 			var appPath = Core::Instance()->getAppPath();
 			var classFile = "%s/%s.php"->format(appPath, className);
 
-			if file_exists(classFile) {
-				require classFile;
-			} else {
-				throw new Error("Class[" . className . "] file no found!", Error::ERROR_NO_CLASS);
-			}
+            if file_exists(classFile) {
+                require classFile;
+            } else {
+                //throw new Error("Class[" . className . "] file no found!", Error::ERROR_NO_CLASS);
+            }
 		}
 
 		return true;

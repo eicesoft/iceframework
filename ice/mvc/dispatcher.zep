@@ -65,10 +65,8 @@ class Dispatcher
 		var className = "%s\%s"->format(namespaces["controller"], route->getController());
 
 		var controllerObj = this->newInstance(className);
-		var method;
-
-		let method = route->getMethod();
-		return controllerObj->{method}();
+		return call_user_func_array([controllerObj, route->getMethod()], route->getParams());
+		//return controllerObj->{method}();
 	}
 
     /**

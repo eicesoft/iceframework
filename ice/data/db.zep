@@ -124,7 +124,14 @@ class Db
 	 */
 	public function execute(string sql, bool id=false)
 	{
+	    string key = "sql_%s"->format(microtime(true));
+        Profile::Instance()->start(key);
 		var ret = this->writerhandler->exec(sql);
+		Profile::Instance()->end(key);
+        var time = Profile::Instance()->get(key, Profile::TIME_FIELD);
+        var memory = Profile::Instance()->get(key, Profile::MEMORY_FIELD);
+        Profile::Instance()->record("sql", sql, time, memory);
+
 		if id {
 			let ret = this->writerhandler->lastInsertId();
 		}

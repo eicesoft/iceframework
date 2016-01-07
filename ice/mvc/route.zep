@@ -18,16 +18,24 @@ class Route
      */
 	private method;
 
+	/**
+	 * 参数
+	 * @var array
+	 */
+	private params;
+
     /**
      * 构造函数
      * @param string controllermethod
+     * @param array params
      */
-	public function __construct(string controllermethod)
+	public function __construct(string controllermethod, array params)
     {
     	var info = explode("@", controllermethod);
 
     	let this->controller = info[0];
     	let this->method = info[1];
+    	let this->params = params;
     }
 
     /**
@@ -46,5 +54,10 @@ class Route
     public function getMethod() -> string
     {
     	return this->method;
+    }
+
+    public function getParams() -> array
+    {
+        return this->params;
     }
 }

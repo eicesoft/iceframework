@@ -39,8 +39,8 @@ class TempletResponse extends Response
 		let loader = new \Twig_Loader_Filesystem(viewPath);
 		var config = [
 			"cache": viewCachePath,
-			"debug": false,
-			"auto_reload": true
+			"debug": app_config["debug"],
+			"auto_reload": app_config["debug"]
 		];
 		let this->twig = new \Twig_Environment(loader, config);
 
