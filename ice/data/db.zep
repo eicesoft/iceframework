@@ -93,6 +93,10 @@ class Db
 			Profile::Instance()->record("sql", sql, time, memory);
 			return result;
 		} else {
+			Profile::Instance()->end(key);
+                        var time = Profile::Instance()->get(key, Profile::TIME_FIELD);
+                        var memory = Profile::Instance()->get(key, Profile::MEMORY_FIELD);
+                        Profile::Instance()->record("sql", sql, time, memory);
 			return [];
 		}
 	}

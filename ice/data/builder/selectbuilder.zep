@@ -152,7 +152,11 @@ final class SelectBuilder
 	private function _get_order() -> string
 	{
 		if this->_orders {
-			return " ORDER BY " . join(",", this->_orders);
+			if is_array(this->_orders) {
+				return " ORDER BY " . join(",", this->_orders);
+			} else {
+				return " ORDER BY " . this->_orders;
+			}
 		} else {
 			return "";
 		}
