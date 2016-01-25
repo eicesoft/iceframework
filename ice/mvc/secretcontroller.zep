@@ -2,9 +2,15 @@ namespace Ice\Mvc;
 
 use Ice\Core;
 
-//控制器类
+/**
+ * 安全控制器类
+ * @author kelezyb
+ */
 class SecretController extends Controller
 {
+    /**
+     * 构造函数
+     */
 	public function __construct()
 	{
 		//var_dump(_REQUEST);
@@ -12,12 +18,20 @@ class SecretController extends Controller
 		this->vaild();
 	}
 
-	public function sort(array value) -> array
+    /**
+     * 排序
+     * @param array value
+     * @return array
+     */
+	protected function sort(array value) -> array
 	{
 		ksort(value);
 		return value;
 	}
 
+    /**
+     * 验证请求是否符合规则
+     */
 	public function vaild()
 	{
 		if isset _REQUEST["secret"] && isset _REQUEST["time"] {

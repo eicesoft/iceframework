@@ -1,5 +1,9 @@
 namespace Ice;
 
+/**
+ * 框架异常类
+ * @author kelezyb
+ */
 class Error extends \Exception
 {
 	const ERROR_NO_CLASS = 101;

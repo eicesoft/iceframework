@@ -1,8 +1,8 @@
 namespace Ice\Data\Cache\Adapter;
 
-use Ice\Data\Cache\ICache;
+use Ice\Data\ICache;
 
-class MemcacheCache extends ICache
+class MemcacheCache implements ICache
 {
 	private _handler;
 
@@ -17,12 +17,12 @@ class MemcacheCache extends ICache
 		return this->_handler->get(key);
 	}
 
-	public function set(string key, data, int expire)
+	public function set(string key, var data, int expire)
 	{
 		return this->_handler->set(key, data, 2, expire);
 	}
 
-	public function delete(string key)
+	public function delete(string key) -> int
 	{
 		return this->_handler->delete(key);
 	}

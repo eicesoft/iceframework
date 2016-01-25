@@ -52,7 +52,7 @@ final class SelectBuilder
 	/**
 	 * 设置字段数据
 	 * @param mixed fields
-	 * @return <SqlBuilder>
+	 * @return SqlBuilder
 	 */
 	public function fields(fields) -> <SqlBuilder>
 	{
@@ -63,7 +63,7 @@ final class SelectBuilder
 	/**
 	 * 设置查询条件
 	 * @param mixed wheres
-	 * @return <SqlBuilder>
+	 * @return SqlBuilder
 	 */
 	public function where(wheres) -> <SqlBuilder>
 	{
@@ -74,7 +74,7 @@ final class SelectBuilder
 	/**
 	 * 设置分组数据
 	 * @param mixed groups
-	 * @return <SqlBuilder>
+	 * @return SqlBuilder
 	 */
 	public function group(groups) {
 		let this->_groups = groups;
@@ -84,7 +84,7 @@ final class SelectBuilder
 	/**
 	 * 设置排序规则
 	 * @param array orders
-	 * @return <SqlBuilder>
+	 * @return SqlBuilder
 	 */
 	public function order(orders) -> <SqlBuilder>
 	{
@@ -152,7 +152,11 @@ final class SelectBuilder
 	private function _get_order() -> string
 	{
 		if this->_orders {
-			return " ORDER BY " . join(",", this->_orders);
+			if is_array(this->_orders) {
+				return " ORDER BY " . join(",", this->_orders);
+			} else {
+				return " ORDER BY " . this->_orders;
+			}
 		} else {
 			return "";
 		}
@@ -190,6 +194,9 @@ final class SelectBuilder
 		return sql;
 	}
 
+    /**
+     * 清除状态
+     */
 	public function clear()
 	{
 		let this->_table = null;

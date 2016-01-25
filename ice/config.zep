@@ -1,22 +1,41 @@
 namespace Ice;
 
-//配置读取
+/**
+ * 配置读取
+ * @author kelezyb
+ */
 final class Config
 {
+    /**
+     * @var Config
+     */
 	private static instance = null;
 
+    /**
+     * @var string
+     */
 	private appConfigPath;
 
+    /**
+     * @var array
+     */
 	private modules;
 
+    /**
+     * 构造函数
+     */
 	private function __construct()
 	{
-		var app_config = Core::Instance()->getAppConfig();
-		let this->appConfigPath = "%s%s"->format(app_config["base"], "/app/configs");
+		let this->appConfigPath = "%s/configs"->format(Core::Instance()->getAppPath());
 		let this->modules = [];
 	}
 
-	//获得配置值
+	/**
+	 * 获得配置值
+	 * @param string key
+	 * @param string module
+	 * @return mixed
+	 */
 	public function get(string key = null, string module = "app")
 	{
 		array data;
@@ -45,10 +64,12 @@ final class Config
 				return this->modules[module][key];
 			}
 		}
-
 	}
 
-	//获得配置实例
+	/**
+	 * 获得配置实例
+	 * @return Config
+	 */
 	public static function Instance() -> <Config>
 	{
 		if null == self::instance {

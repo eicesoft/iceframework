@@ -3,6 +3,10 @@ namespace Ice\Mvc;
 use Ice\Config;
 use Ice\Error;
 
+/**
+ * 路由处理类
+ * @author kelezyb
+ */
 class Router
 {
 	private static instance = null;
@@ -28,7 +32,7 @@ class Router
 			if preg_match("#^/?" . pattern . "/?$#", this->request->getUri(), match) {
 				let matches = array_slice(match, 1);
 
-				return new Route(controller);
+				return new Route(controller, matches);
 			}
 		}
 

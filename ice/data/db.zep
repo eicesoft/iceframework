@@ -1,8 +1,11 @@
 namespace Ice\Data;
 
 use Ice\Config;
+use Ice\Util\Profile;
 
-//DB配置
+/**
+ * DB配置
+ */
 class Db
 {
 	const FETCH_TYPE_ALL = 0;
@@ -17,7 +20,7 @@ class Db
 	private readerhandler;
 
 	/**
-	 *
+	 * @var \PDO
 	 */
 	private writerhandler;
 
@@ -29,7 +32,6 @@ class Db
 
 	/**
 	 * @param array $config
-	 * @return mixed
 	 */
 	protected function _init(array configs)
 	{
@@ -48,6 +50,10 @@ class Db
 		}
 	}
 
+    /**
+     * 初始化Handler
+     * @param array config
+     */
 	private function _initHandler(config)
 	{
 		var dns = "%s:host=%s;dbname=%s"->format(config["type"], config["host"], config["database"]);
@@ -61,12 +67,15 @@ class Db
 	}
 
 	/**
-	 * @param string $sql
-	 * @param int $mode
-	 * @return mixed
+	 * 执行数据查询
+	 * @param string sql
+	 * @param int mode
+	 * @return array
 	 */
 	public function query(string sql, int mode = Db::FETCH_TYPE_ALL)
 	{
+	    string key = "sql_%s"->format(microtime(true));
+	    Profile::Instance()->start(key);
  		var stmt;
 		var result;
 
@@ -78,37 +87,67 @@ class Db
 			} else {
 				let result = stmt->$fetch(\PDO::FETCH_ASSOC);
 			}
+			Profile::Instance()->end(key);
+			var time = Profile::Instance()->get(key, Profile::TIME_FIELD);
+			var memory = Profile::Instance()->get(key, Profile::MEMORY_FIELD);
+			Profile::Instance()->record("sql", sql, time, memory);
 			return result;
 		} else {
+			Profile::Instance()->end(key);
+                        var time = Profile::Instance()->get(key, Profile::TIME_FIELD);
+                        var memory = Profile::Instance()->get(key, Profile::MEMORY_FIELD);
+                        Profile::Instance()->record("sql", sql, time, memory);
 			return [];
 		}
 	}
 
+    /**
+     *
+     */
 	public function $fetch(string sql)
 	{
+	    string key = "sql_%s"->format(microtime(true));
+        Profile::Instance()->start(key);
+
 		var stmt;
 		let stmt = this->readerhandler->prepare(sql, [\PDO::ATTR_CURSOR: \PDO::CURSOR_SCROLL]);
 		stmt->execute();
+        Profile::Instance()->end(key);
+        var time = Profile::Instance()->get(key, Profile::TIME_FIELD);
+        var memory = Profile::Instance()->get(key, Profile::MEMORY_FIELD);
+        Profile::Instance()->record("sql", sql, time, memory);
 
 		return stmt;
 	}
 
 	/**
+	 * 执行SQL语句
 	 * @param string sql
 	 * @param bool id
 	 * @return mixed
 	 */
 	public function execute(string sql, bool id=false)
 	{
+	    string key = "sql_%s"->format(microtime(true));
+        Profile::Instance()->start(key);
 		var ret = this->writerhandler->exec(sql);
+		Profile::Instance()->end(key);
+        var time = Profile::Instance()->get(key, Profile::TIME_FIELD);
+        var memory = Profile::Instance()->get(key, Profile::MEMORY_FIELD);
+        Profile::Instance()->record("sql", sql, time, memory);
+
 		if id {
-			return this->writerhandler->lastInsertId();
-		} else {
-			return ret;
+			let ret = this->writerhandler->lastInsertId();
 		}
+
+		return ret;
 	}
 
-	//获得配置实例
+	//
+	/**
+     * 获得配置实例
+     * @return Db
+     */
 	public static function Instance() -> <Db>
 	{
 		if null == self::instance {
@@ -122,7 +161,7 @@ class Db
 	 * @param string str
 	 * @return string
 	 */
-	public function real_escape_string(str)
+	public function real_escape_string(str) -> string
 	{
 		return addslashes(str);
 	}

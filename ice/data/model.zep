@@ -2,7 +2,11 @@ namespace Ice\Data;
 
 use Ice\Data\Builder\SelectBuilder;
 
-//数据模块
+/**
+ * 数据模块
+ * @package Ice\Data
+ * @author kelezyb
+ */
 class Model
 {
 	/**
@@ -31,7 +35,7 @@ class Model
 	/**
 	 * 获得主键数据
 	 *
-	 * @param int $id
+	 * @param int id
 	 * @return array
 	 */
 	public function get(id) -> array
@@ -41,6 +45,11 @@ class Model
 		return this->query(this->_sb, Db::FETCH_TYPE_LINE);
 	}
 
+    /**
+     * 获得全部数据
+     * @param bool format
+     * @return array
+     */
 	public function getall(bool format = false) -> array
 	{
 		this->_sb->table(this->_table);
@@ -55,6 +64,11 @@ class Model
 		}
 	}
 
+    /**
+     * 获得查询数据
+     * @param array wheres
+     * @return array
+     */
 	public function getwhere(array wheres) -> array
 	{
 		this->_sb->table(this->_table)->where(wheres);
@@ -62,6 +76,14 @@ class Model
 		return this->query(this->_sb, Db::FETCH_TYPE_ALL);
 	}
 
+    /**
+     * 获得分页数据
+     * @param mixed where
+     * @param int page
+     * @param int max
+     * @param string order
+     * @return array
+     */
 	public function getpage(string where = null, int page = 1, int max = 10, string order=null) -> array
 	{
 		var start;
@@ -71,6 +93,11 @@ class Model
 		return this->query(this->_sb, Db::FETCH_TYPE_ALL);
 	}
 
+    /**
+     * 格式化数据
+     * @param array datas
+     * @return array
+     */
 	public function formatrows(array datas) -> array
 	{
 		var ret = [];
@@ -85,7 +112,7 @@ class Model
 	/**
 	* 查询数据数量
 	*
-	* @param array $where
+	* @param array where
 	* @return int
 	*/
 	public function count(array! where = []) -> int
@@ -100,7 +127,12 @@ class Model
 		}
 	}
 
-	//更新数据
+	/**
+	 * 更新数据
+	 * @param array data
+	 * @param mixed id
+	 * @return int
+	 */
 	public function update(array data, id) -> int
 	{
 		array sets = [];
@@ -108,11 +140,13 @@ class Model
 		var k,v;
 
 		for k, v in data {
-			if is_string(v) {
-				let v =  Db::Instance()->real_escape_string($v);
-				let sets[] = "`%s`='%s'"->format(k, v);
-			} else {
-				let sets[] = "`%s`=%s"->format(k, v);
+		    if v != null {
+                if is_string(v) {
+                    let v =  Db::Instance()->real_escape_string($v);
+                    let sets[] = "`%s`='%s'"->format(k, v);
+                } else {
+                    let sets[] = "`%s`=%s"->format(k, v);
+                }
 			}
 		}
 
@@ -123,6 +157,12 @@ class Model
 		return this->execute(sql);
 	}
 
+    /**
+     * 插入数据
+     * @param array data
+     * @param bool lastId
+     * @return int
+     */
 	public function insert(array data, bool lastId = false) -> int
 	{
 		var k, v;
@@ -130,13 +170,15 @@ class Model
 		array fields = [];
 		array values = [];
 		for k,v in data {
-			let fields[] = "`" . k . "`";
+            if v != null {
+                let fields[] = "`" . k . "`";
 
-			if is_string(v) {
-				let v =  Db::Instance()->real_escape_string($v);
-				let values[] = "'" . v . "'";
-			} else {
-				let values[] = v;
+                if is_string(v) {
+                    let v =  Db::Instance()->real_escape_string($v);
+                    let values[] = "'" . v . "'";
+                } else {
+                    let values[] = v;
+                }
 			}
 		}
 
@@ -145,6 +187,11 @@ class Model
 		return this->execute(sql, lastId);
 	}
 
+    /**
+     * 删除主键的数据
+     * @param mixed id
+     * @return int
+     */
 	public function delete(id) -> int
 	{
 		var sql = "DELETE FROM `%s` WHERE `%s`='%s'"->format(this->_table, this->_pk, id);
@@ -152,6 +199,11 @@ class Model
 		return this->execute(sql);
 	}
 
+    /**
+     * 按照条件删除数据
+     * @param string where
+     * @return int
+     */
 	public function deletewhere(string where) -> int
 	{
 		var sql = "DELETE FROM `%s` WHERE %s"->format(this->_table, where);
@@ -159,21 +211,42 @@ class Model
 		return this->execute(sql);
 	}
 
+    /**
+     * 获得选择构造器
+     * @return SelectBuilder
+     */
 	protected function getSelectBuilder() -> <SelectBuilder>
 	{
 		return this->_sb;
 	}
 
+    /**
+     * 获得SQL数据
+     * @param string sql
+     * @return array
+     */
 	protected function $fetch(string sql) -> array
 	{
 		return Db::Instance()->$fetch(sql);
 	}
 
+    /**
+     * 查询SQL语句
+     * @param string sql
+     * @param int model
+     * @return array
+     */
 	protected function query(string sql, int model) -> array
 	{
 		return Db::Instance()->query(sql, model);
 	}
 
+    /**
+     * 执行SQL语句
+     * @param string sql
+     * @param bool lastId
+     * return int
+     */
 	protected function execute(string sql, bool lastId = false)
 	{
 		return Db::Instance()->execute(sql, lastId);

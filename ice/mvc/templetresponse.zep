@@ -2,30 +2,48 @@ namespace Ice\Mvc;
 
 use Ice\Core;
 
+/**
+ * 页面模板输出
+ * @author kelezyb
+ */
 class TempletResponse extends Response
 {
+    /**
+     * @var string
+     */
 	private view;
 
+    /**
+     * @var string
+     */
 	private viewpath;
 
+    /**
+     *
+     * var \Twig_Environment
+     */
 	private twig;
 
+    /**
+     * 构造函数
+     * @param string view
+     * @param array data
+     */
 	public function __construct(string view, array data)
 	{
 		let this->view = view;
 		var app_config = Core::Instance()->getAppConfig();
-		var viewPath = "%s/%s/%s"->format(app_config["base"],  app_config["app"],  app_config["paths"]["view"]);
-		var viewCachePath = "%s/%s/%s/views"->format(app_config["base"],  app_config["app"],  app_config["paths"]["cache"]);
+		var viewPath = "%s/%s"->format(Core::Instance()->getAppPath(),  app_config["paths"]["view"]);
+		var viewCachePath = "%s/%s/views"->format(Core::Instance()->getAppPath(),  app_config["paths"]["cache"]);
 		var loader;
 		let loader = new \Twig_Loader_Filesystem(viewPath);
 		var config = [
 			"cache": viewCachePath,
-			"debug": false,
-			"auto_reload": true
+			"debug": app_config["debug"],
+			"auto_reload": app_config["debug"]
 		];
 		let this->twig = new \Twig_Environment(loader, config);
 
-        this->twig->addExtension(new \Twig_Extension_Optimizer());
 		this->twig->addExtension(new \Twig_Extension_Debug());
 
 		this->twig->addGlobal("session", _SESSION);
@@ -39,6 +57,9 @@ class TempletResponse extends Response
 		parent::__construct(data);
 	}
 
+    /**
+     * 添加urimatch函数
+     */
 	public function addUri()
 	{
 		var func;
@@ -50,6 +71,9 @@ class TempletResponse extends Response
 		this->twig->addFunction(func);
 	}
 
+    /**
+     * 添加script函数
+     */
 	private function addScript()
 	{
 		var func;
@@ -59,6 +83,9 @@ class TempletResponse extends Response
 		this->twig->addFunction(func);
 	}
 
+    /**
+     * 添加style函数
+     */
 	private function addStyle()
 	{
 		var func;
@@ -68,6 +95,9 @@ class TempletResponse extends Response
 		this->twig->addFunction(func);
 	}
 
+    /**
+     * 添加plugins函数
+     */
 	private function addPlugin()
 	{
 		var func;
@@ -82,6 +112,10 @@ class TempletResponse extends Response
 		this->twig->addFunction(func);
 	}
 
+    /**
+     * 获取模板内容
+     * @return string
+     */
 	public function getContent() -> string
 	{
 		var tpl = "%s.twig"->format(this->view);
