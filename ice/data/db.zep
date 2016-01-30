@@ -143,6 +143,21 @@ class Db
 		return ret;
 	}
 
+	public function beginTransaction()
+	{
+		return this->writerhandler->beginTransaction();
+	}
+
+	public function commit()
+	{
+		return this->writerhandler->commit();
+	}
+
+	public function rollBack()
+	{
+		return this->writerhandler->rollBack();
+	}
+
 	//
 	/**
      * 获得配置实例

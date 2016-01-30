@@ -251,4 +251,19 @@ class Model
 	{
 		return Db::Instance()->execute(sql, lastId);
 	}
+
+	public function beginTransaction()
+	{
+		return Db::Instance()->beginTransaction();
+	}
+
+	public function commit()
+	{
+		return Db::Instance()->commit();
+	}
+
+	public function rollBack()
+	{
+		return Db::Instance()->rollBack();
+	}
 }
