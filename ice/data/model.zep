@@ -140,13 +140,13 @@ class Model
 		var k,v;
 
 		for k, v in data {
-		    if v != null {
-                if is_string(v) {
-                    let v =  Db::Instance()->real_escape_string($v);
-                    let sets[] = "`%s`='%s'"->format(k, v);
-                } else {
-                    let sets[] = "`%s`=%s"->format(k, v);
-                }
+			if v != null {
+				if is_string(v) {
+					let v =  Db::Instance()->real_escape_string($v);
+					let sets[] = "`%s`='%s'"->format(k, v);
+				} else {
+					let sets[] = "`%s`=%s"->format(k, v);
+				}
 			}
 		}
 
@@ -157,12 +157,49 @@ class Model
 		return this->execute(sql);
 	}
 
-    /**
-     * 插入数据
-     * @param array data
-     * @param bool lastId
-     * @return int
-     */
+	/**
+	 * 按照条件更新数据
+	 * @param array data
+	 * @param array where
+	 * @return int
+	 */
+	public function updatewhere(array data, array! where = []) -> int
+	{
+		array sets = [];
+		var sql;
+		var k,v;
+
+		for k, v in data {
+			if v != null {
+				if is_string(v) {
+					let v =  Db::Instance()->real_escape_string($v);
+					let sets[] = "`%s`='%s'"->format(k, v);
+				} else {
+					let sets[] = "`%s`=%s"->format(k, v);
+				}
+			}
+		}
+
+		string swhere;
+		if is_array(where) {
+			let swhere = " WHERE  %s"->format(join(" AND ", where));
+		} else {
+			let swhere = " WHERE  %s"->format(where);
+		}
+
+		let sql = "UPDATE `%s` SET %s WHERE %s"->format(
+			this->_table, sets->join(","), swhere
+		);
+
+		return this->execute(sql);
+	}
+
+	/**
+	 * 插入数据
+	 * @param array data
+	 * @param bool lastId
+	 * @return int
+	 */
 	public function insert(array data, bool lastId = false) -> int
 	{
 		var k, v;

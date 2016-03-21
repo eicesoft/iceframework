@@ -53,6 +53,7 @@ class TempletResponse extends Response
 		this->addScript();
 		this->addStyle();
 		this->addPlugin();
+		this->addImage();
 
 		parent::__construct(data);
 	}
@@ -79,6 +80,15 @@ class TempletResponse extends Response
 		var func;
 		let func = new \Twig_SimpleFunction("script", function(file) {
 			return "<script type=\"text/javascript\" src=\"/statics/scripts/" . file . "?v=" . Core::Instance()->get("version") . "\"></script>";
+		}, ["pre_escape": false, "preserves_safety": false, "is_safe": ["html"]]);
+		this->twig->addFunction(func);
+	}
+
+	private function addImage()
+	{
+		var func;
+		let func = new \Twig_SimpleFunction("image", function(file) {
+			return "<image src=\"/statics/images/" . file . "?v=" . Core::Instance()->get("version") . "\" />";
 		}, ["pre_escape": false, "preserves_safety": false, "is_safe": ["html"]]);
 		this->twig->addFunction(func);
 	}

@@ -3,6 +3,7 @@ namespace Ice\Mvc;
 use Ice\Log\Logger;
 use Ice\Config;
 use Ice\Mvc\Proxy\ModelProxy;
+use Ice\Mvc\Proxy\ComponentProxy;
 
 /**
  * 业务组件类
@@ -40,5 +41,15 @@ class Component
 
 		let this->log = Logger::Instance();
 		let this->config = Config::Instance();
+	}
+
+	/**
+	 *
+	 * @param string name
+	 * @return Component
+	 */
+	public function getComponent(string name)
+	{
+		return new ComponentProxy(name);
 	}
 }

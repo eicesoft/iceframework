@@ -60,7 +60,8 @@ class Db
 		var alertcommd = "set NAMES '%s'"->format(config["encode"]);
 		var options = [
 			\PDO::ATTR_CASE : \PDO::CASE_NATURAL,
-			\PDO::MYSQL_ATTR_INIT_COMMAND : alertcommd
+			\PDO::MYSQL_ATTR_INIT_COMMAND : alertcommd,
+			\PDO::ATTR_ERRMODE : \PDO::ERRMODE_EXCEPTION
 		];
 
 		return new \PDO(dns, config["user"], config["password"], options);

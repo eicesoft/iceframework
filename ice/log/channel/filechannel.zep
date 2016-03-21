@@ -28,7 +28,10 @@ class FileChannel extends Channel
 	public function __construct()
 	{
 		var appLogPath = "%s/logs/%s.log"->format(Core::Instance()->getAppPath(), date("Y-m-d"));
-		let this->_handler = fopen(appLogPath, "a+");
+		if is_readable(appLogPath) {
+			let this->_handler = fopen(appLogPath, "a+");
+		}
+
 		let this->_formatter = new LineFormatter();
 	}
 
@@ -43,7 +46,9 @@ class FileChannel extends Channel
 		var message;
 		let message = this->_formatter->format(type, message, context);
 
-		fwrite(this->_handler, message);
+		if this->_handler {
+			fwrite(this->_handler, message);
+		}
 	}
 
     /**
