@@ -19,7 +19,7 @@ class Cache
 	/**
 	 * 当前实例
 	 */
-	private static instance = null;
+	private static instance = [];
 
 	/**
 	 * @var array 缓存的配置
@@ -34,12 +34,12 @@ class Cache
 	/**
 	 * @var array 缓存连接
 	 */
-	private _handlers = [];
+	private _handlers = null;
 
-	private function __construct()
+	private function __construct(string name)
 	{
 		let this->_configs = Config::Instance()->get(null, "cache");
-		this->setConnection(Cache::DEFAULT_NAME);
+		this->setConnection(name);
 	}
 
 	/**
@@ -50,7 +50,7 @@ class Cache
 	{
 		let this->_connect = name;
 
-		if !isset this->_handlers[name] {
+		if this->_handlers == null {
 			this->init(name);
 		}
 	}
@@ -71,10 +71,13 @@ class Cache
 				case "redis":
 					let handler = new RedisCache();
 					break;
+				default:
+					let handler = new MemcacheCache();
+                	break;
 			}
 			handler->connect(config["connect"]);
 
-			let this->_handlers[name] = handler;
+			let this->_handlers = handler;
 		} else {
 			throw new Error("Cache config not found.", Error::ERROR_NO_FOUND_CACHE_CONFIG);
 		}
@@ -94,7 +97,7 @@ class Cache
 	public function get(string key)
 	{
 		let key = this->getPrefixKey(key);
-		return this->_handlers[this->_connect]->get(key);
+		return this->_handlers->get(key);
 	}
 
 	/**
@@ -103,7 +106,7 @@ class Cache
 	public function set(string key, var data, int expire=0)
 	{
 		let key = this->getPrefixKey(key);
-		return this->_handlers[this->_connect]->set(key, data, expire);
+		return this->_handlers->set(key, data, expire);
 	}
 
 	/**
@@ -112,7 +115,7 @@ class Cache
 	public function delete(string key)
 	{
 		let key = this->getPrefixKey(key);
-		return this->_handlers[this->_connect]->delete(key);
+		return this->_handlers->delete(key);
 	}
 
 	/**
@@ -135,19 +138,19 @@ class Cache
     public function __call(string name, array arguments)
     {
         let arguments[0] = this->getPrefixKey(arguments[0]);
-        return call_user_func_array([this->_handlers[this->_connect], name], arguments);
+        return call_user_func_array([this->_handlers, name], arguments);
     }
 
 	/**
 	 * 获得Cache实例
 	 * @return Cache
 	 */
-	public static function Instance() -> <Cache>
+	public static function Instance(string name = Cache::DEFAULT_NAME) -> <Cache>
 	{
-		if null == self::instance {
-			let self::instance = new Cache();
+		if !isset self::instance[name] {
+			let self::instance[name] = new Cache(name);
 		}
 
-		return self::instance;
+		return self::instance[name];
 	}
 }
