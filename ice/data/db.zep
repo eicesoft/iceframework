@@ -2,6 +2,7 @@ namespace Ice\Data;
 
 use Ice\Config;
 use Ice\Util\Profile;
+use Ice\Error;
 
 /**
  * DB配置
