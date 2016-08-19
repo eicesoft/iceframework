@@ -57,7 +57,7 @@ class Db
      */
 	private function _initHandler(config)
 	{
-		var dns = "%s:host=%s;dbname=%s"->format(config["type"], config["host"], config["database"]);
+		var dns = "%s:host=%s;dbname=%s;port=%s"->format(config["type"], config["host"], config["database"], config["port"]);
 		var alertcommd = "set NAMES '%s'"->format(config["encode"]);
 		var options = [
 			\PDO::ATTR_CASE : \PDO::CASE_NATURAL,
