@@ -104,7 +104,7 @@ class Db
 	}
 
 	public function setopt(string key, string val) {
-		string sql = "set %s = '%'"->format(key, val);
+		string sql = "set %s = '%s'"->format(key, val);
 		var ret = this->readerhandler->exec(sql);
 	}
 
