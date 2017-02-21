@@ -55,9 +55,9 @@
 
     "namespace": "ice",
     "name": "ice",
-    "description": "Ice framework(Kill Ouyang 100 counts.)",
+    "description": "Ice framework(Kill Ouyang 9527 counts.)",
     "author": "kelezyb",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "verbose": false,
     "requires": {
         "extensions": [
