@@ -16,8 +16,8 @@ abstract class Channel
     /**
      * 记录日志数据
      * @param int type
-     * @param mixed message
+     * @param mixed msg
      * @param array context
      */
-	abstract public function log(int type, var message = null, array! context = null);
+	abstract public function log(int type, var msg = null, array! context = null);
 }

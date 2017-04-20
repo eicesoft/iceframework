@@ -36,13 +36,13 @@ class FileChannel extends Channel
     /**
      * 记录日志
      * @param int type
-     * @param mixed message
+     * @param mixed msg
      * @param array context
      */
-	public function log(int type, var message = null, array! context = null)
+	public function log(int type, var msg = null, array! context = null)
 	{
 		var message;
-		let message = this->_formatter->format(type, message, context);
+		let message = this->_formatter->format(type, msg, context);
 
 		if this->_handler {
 			fwrite(this->_handler, message);
