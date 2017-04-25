@@ -187,7 +187,7 @@ class Model
 			let swhere = " WHERE  %s"->format(where);
 		}
 
-		let sql = "UPDATE `%s` SET %s WHERE %s"->format(
+		let sql = "UPDATE `%s` SET %s %s"->format(
 			this->_table, sets->join(","), swhere
 		);
 
