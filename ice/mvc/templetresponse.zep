@@ -45,8 +45,12 @@ class TempletResponse extends Response
 		let this->twig = new \Twig_Environment(loader, config);
 
 		this->twig->addExtension(new \Twig_Extension_Debug());
+        try {
+            this->twig->addGlobal("session", _SESSION);
+        } catch \Exception {
 
-		this->twig->addGlobal("session", _SESSION);
+        }
+
 		this->twig->addGlobal("server", _SERVER);
 
 		this->addUri();

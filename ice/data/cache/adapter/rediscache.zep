@@ -20,7 +20,11 @@ class RedisCache implements ICache
 
 	public function set(string key, var data, int expire)
 	{
-		return this->_handler->set(key, data, expire);
+		if expire == 0 {
+			return this->_handler->set(key, data);
+		} else {
+			return this->_handler->setEx(key, expire, data);
+		}
 	}
 
 	public function delete(string key) -> int

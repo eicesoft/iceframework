@@ -130,20 +130,20 @@ class Db
 	/**
 	 * 执行SQL语句
 	 * @param string sql
-	 * @param bool id
+	 * @param bool last_id
 	 * @return mixed
 	 */
-	public function execute(string sql, bool id=false)
+	public function execute(string sql, bool last_id=false)
 	{
-	    string key = "sql_%s"->format(microtime(true));
-		var time = Profile::Instance()->get(key, Profile::TIME_FIELD);
-        var memory = Profile::Instance()->get(key, Profile::MEMORY_FIELD);
-        Profile::Instance()->record("sql", sql, time, memory);
-        Profile::Instance()->start(key);
+	    //string key = "sql_%s"->format(microtime(true));
+		//var time = Profile::Instance()->get(key, Profile::TIME_FIELD);
+        //var memory = Profile::Instance()->get(key, Profile::MEMORY_FIELD);
+        //Profile::Instance()->record("sql", sql, time, memory);
+        //Profile::Instance()->start(key);
 		var ret = this->writerhandler->exec(sql);
-		Profile::Instance()->end(key);
+		//Profile::Instance()->end(key);
 
-		if id {
+		if last_id {
 			let ret = this->writerhandler->lastInsertId();
 		}
 

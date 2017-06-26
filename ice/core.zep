@@ -79,13 +79,13 @@ final class Core
 	public function __construct(array config)
 	{
 		let this->app_config = config;
-		this->error_register();
+		//this->error_register();
 		this->init();
 	}
 
 	private function init()
 	{
-	    var debug, timezone;
+	    var debug, timezone, defines;
 	    if fetch debug, this->app_config["debug"] {
 	        if debug {
 	            ini_set("display_errors", 1);
@@ -103,6 +103,18 @@ final class Core
             date_default_timezone_set(timezone);
         } else {
             date_default_timezone_set("UTC");
+        }
+
+        var d_k;
+        if fetch defines, this->app_config["defines"] {
+            var k, v;
+            for k, v in defines {
+                let d_k = "ICE_%s"->format(k);
+
+                if !defined(d_k) {
+                    define(d_k, v);
+                }
+            }
         }
 
         Loader::Instance()->register();
@@ -129,49 +141,6 @@ final class Core
 	            break;
 	    }
 	}
-
-    /**
-     * 错误处理handler注册
-     */
-	public function error_register()
-	{
-        set_error_handler([this, "error_handler"],  E_ALL);
-        set_exception_handler([this, "exception_handler"]);
-        register_shutdown_function([this, "shutdown_handler"]);
-	}
-
-    /**
-     * 页面卸载回调
-     */
-	public function shutdown_handler()
-	{
-	    Profile::Instance()->end("page");
-	}
-
-    /**
-     * 错误处理
-     * @param int errno
-     * @param string errorstr
-     * @param string errfile
-     * @param string errline
-     */
-	public function error_handler(int errno, string errstr, string errfile, string errline, array! errcontext)
-	{
-        Logger::Instance()->error(sprintf("{ERR}%s(%d)-[%s:%d]", errstr, errno, errfile, errline));
-    }
-
-    /**
-     * 异常处理
-     * @param \Exception $exception
-     */
-    public function exception_handler(exception)
-    {
-        Logger::Instance()->error(sprintf("{EXCEPTION}%s(%d)-[%s:%d]",
-            exception->getMessage(),
-            exception->getCode(),
-            exception->getFile(),
-            exception->getLine()));
-    }
 
     /**
      * 获得App路径
