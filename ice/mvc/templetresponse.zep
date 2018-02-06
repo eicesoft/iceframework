@@ -126,6 +126,12 @@ class TempletResponse extends Response
 		this->twig->addFunction(func);
 	}
 
+	public function addFunction(string funcname, func, array params) {
+		var func;
+		let func = new \Twig_SimpleFunction(funcname, func,, params);
+		this->twig->addFunction(func);
+	}
+	
     /**
      * 获取模板内容
      * @return string

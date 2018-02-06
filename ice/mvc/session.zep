@@ -54,7 +54,7 @@ class Session implements \ArrayAccess
      * 删除Session
      * @param string offset
      */
-	public function offsetUnset($offset)
+	public function offsetUnset(offset)
 	{
 		unset _SESSION[offset];
 	}
