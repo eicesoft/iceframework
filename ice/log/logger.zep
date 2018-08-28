@@ -41,8 +41,8 @@ final class Logger
 		var handler;
 		var className;
 		for handler in config["handlers"] {
-			let className = "\Ice\Log\Channel\%s"->format(handler["type"]);
-			this->addChannel(new {className});
+			// let className = "\Ice\Log\Channel\%s"->format(handler["type"]);
+			// this->addChannel(new {className});
 		}
 
 		this->setLevelType(config["level"]);
