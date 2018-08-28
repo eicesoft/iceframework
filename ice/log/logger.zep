@@ -37,15 +37,15 @@ final class Logger
 	{
 		let this->_channels = [];
 
-		// var config = Config::Instance()->get(null, "log");
-		// var handler;
-		// var className;
-		// for handler in config["handlers"] {
-		// 	let className = "\Ice\Log\Channel\%s"->format(handler["type"]);
-		// 	this->addChannel(new {className});
-		// }
+		var config = Config::Instance()->get(null, "log");
+		var handler;
+		var className;
+		for handler in config["handlers"] {
+			let className = "\Ice\Log\Channel\%s"->format(handler["type"]);
+			this->addChannel(new {className});
+		}
 
-		// this->setLevelType(config["level"]);
+		this->setLevelType(config["level"]);
 	}
 
     /**
@@ -74,14 +74,14 @@ final class Logger
      */
 	private function log(int type, var message = null, array! context = null)
 	{
-		// if type >= this->_level {
-		// 	var channel;
-		// 	for channel in this->_channels {
-		// 	    if channel instanceof Channel {
-		// 		    channel->log(type, message, context);
-		// 		}
-		// 	}
-		// }
+		if type >= this->_level {
+			var channel;
+			for channel in this->_channels {
+			    if channel instanceof Channel {
+				    channel->log(type, message, context);
+				}
+			}
+		}
 	}
 
     /**
