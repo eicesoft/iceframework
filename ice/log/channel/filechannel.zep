@@ -54,6 +54,8 @@ class FileChannel extends Channel
      */
 	public function __destruct()
 	{
-		fclose(this->_handler);
+		if(is_resource(this->_handler)) {
+			fclose(this->_handler);
+		}
 	}
 }
