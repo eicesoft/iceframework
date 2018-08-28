@@ -41,12 +41,12 @@ class Profile
     public function start(string name)
     {
         if this->_debug {
-            let this->_sections[name] = [
-                "start" : [
-                    Profile::TIME_FIELD : microtime(true),
-                    Profile::MEMORY_FIELD : memory_get_usage()
-                ]
-            ];
+            // let this->_sections[name] = [
+            //     "start" : [
+            //         Profile::TIME_FIELD : microtime(true),
+            //         Profile::MEMORY_FIELD : memory_get_usage()
+            //     ]
+            // ];
         }
     }
 
@@ -57,10 +57,10 @@ class Profile
     public function end(string name)
     {
         if this->_debug {
-            let this->_sections[name]["end"] = [
-                     Profile::TIME_FIELD : microtime(true),
-                     Profile::MEMORY_FIELD : memory_get_usage()
-            ];
+            // let this->_sections[name]["end"] = [
+            //          Profile::TIME_FIELD : microtime(true),
+            //          Profile::MEMORY_FIELD : memory_get_usage()
+            // ];
         }
     }
 
@@ -71,13 +71,13 @@ class Profile
      */
     public function get(string name, string field)
     {
-        if this->_debug {
-            var info = this->_sections[name];
+        // if this->_debug {
+        //     var info = this->_sections[name];
 
-            return info["end"][field] - info["start"][field];
-        } else {
-            return -1;
-        }
+        //     return info["end"][field] - info["start"][field];
+        // } else {
+        //     return -1;
+        // }
     }
 
     /**
@@ -90,15 +90,15 @@ class Profile
     public function record(string module, string data, float time, int memory)
     {
         if this->_debug {
-            if !isset this->_records[module] {
-                let this->_records[module] = [];
-            }
+            // if !isset this->_records[module] {
+            //     let this->_records[module] = [];
+            // }
 
-            let this->_records[module][] = [
-                Profile::DATA_FIELD : data,
-                Profile::TIME_FIELD : time,
-                Profile::MEMORY_FIELD : memory
-            ];
+            // let this->_records[module][] = [
+            //     Profile::DATA_FIELD : data,
+            //     Profile::TIME_FIELD : time,
+            //     Profile::MEMORY_FIELD : memory
+            // ];
         }
     }
 
