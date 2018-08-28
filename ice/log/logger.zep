@@ -74,14 +74,14 @@ final class Logger
      */
 	private function log(int type, var message = null, array! context = null)
 	{
-		if type >= this->_level {
-			var channel;
-			for channel in this->_channels {
-			    if channel instanceof Channel {
-				    channel->log(type, message, context);
-				}
-			}
-		}
+		// if type >= this->_level {
+		// 	var channel;
+		// 	for channel in this->_channels {
+		// 	    if channel instanceof Channel {
+		// 		    channel->log(type, message, context);
+		// 		}
+		// 	}
+		// }
 	}
 
     /**
